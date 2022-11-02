@@ -1,0 +1,72 @@
+create table if not exists emp_details (
+	id int,
+    name varchar(20),
+    manager_id int,
+    salary int,
+    designation varchar(30)
+);
+
+
+
+insert into emp_details(id, name,manager_id,salary,designation) 
+values 
+(1,'Shripadh',null,10000,"CEO"),
+(2,'Satya',5,1000,"SE"),
+(3,'jia',5,1500,"DA"),
+(4,'David',5,3005,"DS"),
+(5,'Michael',7,2500,"MANAGER"),
+(6,'Arvind',7,56920,'ARCHITECT'),
+(7,"Asha",1,1250,'CTO'),
+(8,'Maryam',1,1025,'MANAGER'),
+(9,'Reshma',8,2225,'BA'),
+(10,'Akshay',8,9965,'JAVADEVELOPER');
+
+
+select * from emp_details;
+
+
+## Recursive sql queries 
+==================================
+
+--------------------------------------------------------------
+# Q1 Display number from 1 to 10 without using any in built functions :
+--------------------------------------------------------------
+
+with recursive  numbers as 
+( select 1 as n -- base query or initial_query
+	union
+select n+1 from numbers where n < 10 -- recursive query 
+)
+select * from numbers;
+
+
+--------------------------------------------------------------
+# Q2 Find the hierarchy of employees under a given manager "Asha"
+--------------------------------------------------------------
+
+with recursive emp_hierarchy as 
+ ( select id, name, manager_id, designation
+   from emp_details where name = 'Asha'
+   union 
+   select E.id, E.name, E.manager_id,E.designation 
+   from emp_hierarchy H
+   join emp_details E on H.id = E.manager_id
+ )
+ select * from emp_hierarchy;
+ 
+ 
+--------------------------------------------------------------
+# Q3 Find the hierarchy of managers for a given employee "David"
+--------------------------------------------------------------
+
+with recursive emp_hierarchy as 
+ ( select id, name, manager_id, designation
+   from emp_details where name = 'David'
+   union 
+   select E.id, E.name, E.manager_id,E.designation 
+   from emp_hierarchy H
+   join emp_details E on H.manager_id = E.id
+ )
+ select H2.id,H2.name as employee_name,E2.name as manager_name 
+ from  emp_hierarchy H2 
+ JOIN emp_details E2 on E2.id = H2.manager_id;
