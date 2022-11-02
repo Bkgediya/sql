@@ -1,21 +1,19 @@
-List of all these 20 queries mentioned below:
+List of all these 20 queries mentioned below in mysql database:
+===============================================================
 
-==================================
+dataset link:
+============
+https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results
 
 -------------------------------------------------------------------------------------------------------------------
 1. How many olympics games have been held?
-
-
-Ans :-->
-
+Ans:
 SELECT count(DISTINCT(Games)) FROM olympics.olympics_history;
 
 -------------------------------------------------------------------------------------------------------------------
 
 2. List down all Olympics games held so far.
-
-Ans --> 
-
+Ans:
 SELECT 
     Year, City,Season
 FROM
@@ -26,7 +24,7 @@ GROUP BY Year ORDER BY Year ASC;
 
 3. Mention the total no of nations who participated in each olympics game?
 
-Ans :
+Ans:
 
     with all_countries as
         (select games, nr.region
